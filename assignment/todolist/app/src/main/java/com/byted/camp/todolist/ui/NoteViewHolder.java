@@ -28,7 +28,6 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
             new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.ENGLISH);
 
     private final NoteOperator operator;
-
     private CheckBox checkBox;
     private TextView contentText;
     private TextView dateText;
@@ -47,7 +46,6 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
     public void bind(final Note note) {
         contentText.setText(note.getContent());
         dateText.setText(SIMPLE_DATE_FORMAT.format(note.getDate()));
-
         checkBox.setOnCheckedChangeListener(null);
         checkBox.setChecked(note.getState() == State.DONE);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.byted.camp.todolist.R;
+import com.byted.camp.todolist.operation.db.AppDatabase;
 import com.byted.camp.todolist.operation.db.FeedReaderContract.FeedEntry;
 import com.byted.camp.todolist.operation.db.FeedReaderDbHelper;
 
@@ -106,7 +107,6 @@ public class DatabaseActivity extends AppCompatActivity implements View.OnClickL
         values.put(FeedEntry.COLUMN_NAME_SUBTITLE, "my_subtitle3");
         newRowId = db.insert(FeedEntry.TABLE_NAME, null, values);
         Log.i(TAG, "perform add data(title3), result:" + newRowId);
-
 //        User user = new User();
 //        user.firstName = "zhang";
 //        user.lastName = "san";

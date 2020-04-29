@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.byted.camp.todolist.beans.Note;
+import com.byted.camp.todolist.db.NoteDataBase;
 import com.byted.camp.todolist.operation.activity.DatabaseActivity;
 import com.byted.camp.todolist.operation.activity.DebugActivity;
 import com.byted.camp.todolist.operation.activity.SettingActivity;
@@ -25,14 +26,18 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD = 1002;
-
+    NoteDataBase noteDataBase;
     private RecyclerView recyclerView;
     private NoteListAdapter notesAdapter;
+    //将ROOM数据库放在了application中初始化
+    private TodoListApplication application=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        application=(TodoListApplication)this.getApplication();
+        noteDataBase=application.getNoteDataBase();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -65,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(notesAdapter);
 
         notesAdapter.refresh(loadNotesFromDatabase());
+
     }
 
     @Override
@@ -108,16 +114,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<Note> loadNotesFromDatabase() {
-        // TODO 从数据库中查询数据，并转换成 JavaBeans
-        return null;
+        //TODO 1 从数据库中查询所有note
+        return noteDataBase.noteDao().getAll();
     }
 
     private void deleteNote(Note note) {
-        // TODO 删除数据
+        // TODO 2 当点击了x时，从数据库中删除已经做完的note
+        noteDataBase.noteDao().delete(note);
+        notesAdapter.refresh(loadNotesFromDatabase());
     }
 
     private void updateNode(Note note) {
-        // 更新数据
+        // TODO 3 当note做完时，更新数据库中对应note的state状态
+        noteDataBase.noteDao().update(note);
+        notesAdapter.refresh(loadNotesFromDatabase());
     }
 
 }
