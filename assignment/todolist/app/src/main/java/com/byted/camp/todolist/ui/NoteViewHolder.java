@@ -2,6 +2,7 @@ package com.byted.camp.todolist.ui;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -24,19 +25,22 @@ import java.util.Locale;
  */
 public class NoteViewHolder extends RecyclerView.ViewHolder {
 
+
+
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT =
             new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.ENGLISH);
-
     private final NoteOperator operator;
     private CheckBox checkBox;
     private TextView contentText;
     private TextView dateText;
     private View deleteBtn;
+    public Drawable red =itemView.getResources().getDrawable(R.color.red);
+    public Drawable yellow =itemView.getResources().getDrawable(R.color.yellow);
+    public Drawable green =itemView.getResources().getDrawable(R.color.green);
 
     public NoteViewHolder(@NonNull View itemView, NoteOperator operator) {
         super(itemView);
         this.operator = operator;
-
         checkBox = itemView.findViewById(R.id.checkbox);
         contentText = itemView.findViewById(R.id.text_content);
         dateText = itemView.findViewById(R.id.text_date);
@@ -48,6 +52,19 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
         dateText.setText(SIMPLE_DATE_FORMAT.format(note.getDate()));
         checkBox.setOnCheckedChangeListener(null);
         checkBox.setChecked(note.getState() == State.DONE);
+        switch (note.getPriority()){
+            case 4:
+                itemView.setBackground(red);
+                break;
+            case 3:
+                itemView.setBackground(yellow);
+                break;
+            case 2:
+                itemView.setBackground(green);
+                break;
+            case 1:
+                break;
+        }
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

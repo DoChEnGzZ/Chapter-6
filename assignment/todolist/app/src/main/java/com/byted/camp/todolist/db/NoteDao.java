@@ -14,7 +14,10 @@ import java.util.List;
 
 @Dao
 public interface NoteDao {
-    @Query("SELECT* FROM notes")
+    /**
+     *查询数据库中所有信息时按照优先级降序，就可以实现优先级越高的note越在上面
+     */
+    @Query("SELECT* FROM notes ORDER BY priority DESC")
     List<Note> getAll();
 
     @Query("SELECT* FROM notes WHERE id == :nid")

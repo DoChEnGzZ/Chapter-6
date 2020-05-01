@@ -7,9 +7,8 @@ import android.arch.persistence.room.TypeConverters;
 
 
 import com.byted.camp.todolist.beans.Note;
-@Database(entities = {Note.class},version = 1,exportSchema = false)
+@Database(entities = {Note.class},version = 2,exportSchema = false)
 public abstract class NoteDataBase extends RoomDatabase {
     private static final String DB_Name="Note.db";
-
     public abstract NoteDao noteDao();
 }

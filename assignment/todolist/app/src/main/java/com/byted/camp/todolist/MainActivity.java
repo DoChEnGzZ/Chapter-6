@@ -26,10 +26,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD = 1002;
+    //将ROOM数据库放在了application中初始化
     NoteDataBase noteDataBase;
     private RecyclerView recyclerView;
     private NoteListAdapter notesAdapter;
-    //将ROOM数据库放在了application中初始化
     private TodoListApplication application=null;
 
     @Override

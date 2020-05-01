@@ -1,6 +1,7 @@
 package com.byted.camp.todolist;
 
 import android.app.Activity;
+import android.arch.persistence.room.PrimaryKey;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.byted.camp.todolist.beans.Note;
@@ -31,6 +35,9 @@ public class NoteActivity extends AppCompatActivity {
     private Date date=new Date(System.currentTimeMillis());
     private List<Integer> IDs;
     public NoteDataBase noteDataBase;
+    private Spinner spinner;
+    private String[] PriorityList={"1","2","3","4"};
+    private int Priority;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,9 @@ public class NoteActivity extends AppCompatActivity {
         noteDataBase=application.getNoteDataBase();
         IDs=noteDataBase.noteDao().getID();
         itemnums=noteDataBase.noteDao().getNums();
+        spinner=(Spinner)findViewById(R.id.spinner_pr);
+        ArrayAdapter<String> arrayAdapter= new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,PriorityList);
+        spinner.setAdapter(arrayAdapter);
         int i=0;
         while (i<=itemnums)
         {
@@ -84,6 +94,19 @@ public class NoteActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Priority=Integer.parseInt(PriorityList[i]);
+                Log.d(TAG,"插入的优先级是"+PriorityList[i]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -99,6 +122,7 @@ public class NoteActivity extends AppCompatActivity {
             note.setDate(date);
             note.setContent(content);
             note.setState(State.TODO);
+            note.setPriority(Priority);
             noteDataBase.noteDao().insert(note);
             return true;
         }catch (Exception e)
